@@ -1,0 +1,237 @@
+{
+    "info": {
+        "_postman_id": "22dcb5aa-c1be-4e51-9377-63807f4152fe",
+        "name": "accounts",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "signup",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/singup/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "singup"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\":\"test3@gmail.com\",\n  \"name\":\"test\",\n  \"password\":\"Khan786*\",\n  \"phone\":\"+1 (438) 555-7890\"\n}"
+                }
+            }
+        },
+        {
+            "name": "login",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/login/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "login"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\":\"admin@gmail.com\",\n  \"password\":\"1234\"\n}"
+                }
+            }
+        },
+        {
+            "name": "profile",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/profile/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "profile"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MTQyNTI2LCJpYXQiOjE3MzUxNDEzMjYsImp0aSI6ImI5MTkwYTQ1MDg0NTQ0ZjA5OTE1ODcxYTJjNTAxYzQ0IiwidXNlcl9pZCI6MX0.4hMCmHDDcC_vxdEOPwXn7Z2ImWP07lCFkWGDUvGfXpA",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "update profile",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/profile/update/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "profile",
+                        "update"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\": \"iqran\"\n}"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MTQ2ODIyLCJpYXQiOjE3MzUxNDU2MjIsImp0aSI6IjA1NTE4YTc2ZjljYjQwODQ5ZDJiZTJkY2Y0NTJhMzA5IiwidXNlcl9pZCI6MX0.M-3fng9MVWqorK9tjFdU4fqls7TRhuTBKYDmMovVjSo",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "change password",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/changepassword/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "changepassword"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"password\":\"123456\",\n  \"password2\":\"123456\"\n}"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MTQ2ODIyLCJpYXQiOjE3MzUxNDU2MjIsImp0aSI6IjA1NTE4YTc2ZjljYjQwODQ5ZDJiZTJkY2Y0NTJhMzA5IiwidXNlcl9pZCI6MX0.M-3fng9MVWqorK9tjFdU4fqls7TRhuTBKYDmMovVjSo",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "reset password email",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/send-reset-password-email/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "send-reset-password-email"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\":\"admin@gmail.com\"\n}"
+                }
+            }
+        },
+        {
+            "name": "rest password",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/v1/api/accounts/reset-password/MQ/cilr0r-6e248769a139bcd401f6fdedf6f28bf3/",
+                    "path": [
+                        "v1",
+                        "api",
+                        "accounts",
+                        "reset-password",
+                        "MQ",
+                        "cilr0r-6e248769a139bcd401f6fdedf6f28bf3"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"password\":\"1234\",\n  \"password2\":\"1234\"\n}"
+                }
+            }
+        }
+    ]
+}
