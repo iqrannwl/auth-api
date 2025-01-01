@@ -2,14 +2,14 @@ from rest_framework import serializers
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from.models import CustomUser
+from .models import CustomUser
 from .utils import Util
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["email", "name", "password", "image", "phone"]
-    
+
     def create(self, validated_data):
         return super().create(validated_data)
 
@@ -28,27 +28,31 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
-        instance.image = validated_data.get("images", instance.image)
+        instance.image = validated_data.get("image", instance.image)
         instance.phone = validated_data.get("phone", instance.phone)
         instance.save()
-        return super().update(instance, validated_data)
-    
+        return instance
+
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(style={"input_type":"password"}, write_only=True, max_length=255)
     password = serializers.CharField(style={"input_type":"password"}, write_only=True, max_length=255)
     password2 = serializers.CharField(style={"input_type":"password"}, write_only=True, max_length=255)
 
     class Meta:
         model = CustomUser
-        fields = ["password", "password2"]
+        fields = ["old_password", "password", "password2"]
 
-    
+
     def validate(self, attrs):
+        old_password = attrs.get("old_password")
         password = attrs.get("password")
         password2 = attrs.get("password2")
         user = self.context.get("user")
+        if not user.check_password(old_password):
+            raise serializers.ValidationError("Old password is incorrect")
         if password != password2:
-            raise serializers.ValidationError("Password and confirm password doen't match")
+            raise serializers.ValidationError("Password and confirm password don't match")
         user.set_password(password)
         user.save()
         return attrs
@@ -74,35 +78,33 @@ class SendPasswordResetEmailSerializer(serializers.ModelSerializer):
             'body':body,
             'to_email':user.email
             }
-            # Util.send_email(data)
-            print(link)
+            Util.send_email(data)
             return attrs
         else:
             raise serializers.ValidationError('You are not a Registered User')
 
-
-
 class UserPasswordResetSerializer(serializers.Serializer):
-  password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-  password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-  class Meta:
-    fields = ['password', 'password2']
+    password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+    password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
 
-  def validate(self, attrs):
-    try:
-      password = attrs.get('password')
-      password2 = attrs.get('password2')
-      uid = self.context.get('uid')
-      token = self.context.get('token')
-      if password != password2:
-        raise serializers.ValidationError("Password and Confirm Password doesn't match")
-      id = smart_str(urlsafe_base64_decode(uid))
-      user = CustomUser.objects.get(id=id)
-      if not PasswordResetTokenGenerator().check_token(user, token):
-        raise serializers.ValidationError('Token is not Valid or Expired')
-      user.set_password(password)
-      user.save()
-      return attrs
-    except DjangoUnicodeDecodeError as identifier:
-      PasswordResetTokenGenerator().check_token(user, token)
-      raise serializers.ValidationError('Token is not Valid or Expired')
+    def validate(self, attrs):
+        password = attrs.get('password')
+        password2 = attrs.get('password2')
+        uid = self.context.get('uid')
+        token = self.context.get('token')
+
+        if password != password2:
+            raise serializers.ValidationError({"password": "Password and Confirm Password don't match"})
+
+        try:
+            id = smart_str(urlsafe_base64_decode(uid))
+            user = CustomUser.objects.get(id=id)
+        except (DjangoUnicodeDecodeError, CustomUser.DoesNotExist):
+            raise serializers.ValidationError({"token": "Token is not Valid or Expired"})
+
+        if not PasswordResetTokenGenerator().check_token(user, token):
+            raise serializers.ValidationError({"token": "Token is not Valid or Expired"})
+
+        user.set_password(password)
+        user.save()
+        return attrs

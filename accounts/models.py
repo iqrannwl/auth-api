@@ -15,7 +15,7 @@ class RandomAvatar:
             'avatars/3.png',
             'avatars/4.png',
         ]
-    
+
     def __call__(self):
         return random.choice(self.avatar)
 
@@ -39,17 +39,17 @@ class CustomUser(AbstractBaseUser, TimeStampedModel):
 
     def __str__(self):
         return self.email
-    
+
     def has_perm(self, perm, obj=None):
         return self.is_admin
-    
+
     def has_module_perms(self, app_lable):
         return True
-    
+
     @property
     def is_staff(self):
         return self.is_admin
-    
+
     @property
     def is_superuser(self):
         return self.is_admin
